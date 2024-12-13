@@ -52,11 +52,24 @@ function Modal({ onClose, character }: ModalProps) {
   );
 }
 
+type Order = "A-Z" | "Z-A";
+
 function App() {
   const [characters, setCharacters] = useState<Character[]>([]);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<Character>();
+
+  const [order, setOrder] = useState<Order>("A-Z");
+
+  useEffect(() => {
+    if (order === "Z-A") {
+      setCharacters(characters.sort((a, b) => a.name.localeCompare(b.name)));
+    }
+    if (order === "A-Z") {
+      setCharacters(characters.sort((a, b) => b.name.localeCompare(a.name)));
+    }
+  }, [order]);
 
   async function getData() {
     await fetch("https://rickandmortyapi.com/api/character")
@@ -75,10 +88,6 @@ function App() {
     getData();
   }, []);
 
-  useEffect(() => {
-    console.log(characters);
-  }, [characters]);
-
   return (
     <>
       <div className="flex justify-center">
@@ -88,16 +97,7 @@ function App() {
               name=""
               id=""
               onChange={(e) => {
-                if (e.target.value === "A-Z") {
-                  setCharacters(
-                    characters.sort((a, b) => a.name.localeCompare(b.name))
-                  );
-                }
-                if (e.target.value === "Z-A") {
-                  setCharacters(
-                    characters.sort((a, b) => b.name.localeCompare(a.name))
-                  );
-                }
+                setOrder(e.target.value as Order);
               }}
             >
               <option value="A-Z">A - Z</option>
