@@ -26,6 +26,24 @@ interface ModalProps {
 }
 
 function Modal({ onClose, character }: ModalProps) {
+  const [favArray, setFavArray] = useState<number[]>(
+    JSON.parse(localStorage.getItem("favArray") || "[]")
+  );
+
+  function handleFav(id: number) {
+    let newArray: number[];
+
+    if (favArray.some((fav) => fav === id)) {
+      newArray = favArray.filter((fav) => fav !== id);
+    } else {
+      const oldArray = favArray;
+      oldArray.push(id);
+      newArray = oldArray;
+    }
+    setFavArray(newArray);
+    localStorage.setItem("favArray", JSON.stringify(newArray));
+  }
+
   return (
     <div
       id="modal"
@@ -40,12 +58,22 @@ function Modal({ onClose, character }: ModalProps) {
           <p>Estado: {character.status}</p>
           <p>Origen: {character.origin.name}</p>
           <p>Ubicación: {character.location.name}</p>
-          <button
-            onClick={onClose}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Close
-          </button>
+          <div className="flex justify-around">
+            <button
+              onClick={onClose}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Close
+            </button>
+            <button
+              onClick={() => handleFav(character.id)}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              {favArray.some((fav) => fav == character.id)
+                ? "Quitar favorito"
+                : "Favorito"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
