@@ -32,13 +32,21 @@ function Modal({ onClose, character }: ModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div className="bg-white rounded-lg p-6">
-        <p>Nombre: {character.name}</p>
-        <button
-          onClick={onClose}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Close
-        </button>
+        <img src={character.image} alt="" />
+        <div>
+          <p>Nombre: {character.name}</p>
+          <p>Genero: {character.gender}</p>
+          <p>Especie: {character.species}</p>
+          <p>Estado: {character.status}</p>
+          <p>Origen: {character.origin.name}</p>
+          <p>Ubicación: {character.location.name}</p>
+          <button
+            onClick={onClose}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -103,7 +111,7 @@ function App() {
                   setShowModal(true);
                   setSelectedCharacter(c);
                 }}
-                className="border flex flex-col items-center bg-green-600 w-48 p-3"
+                className="border flex flex-col items-center bg-green-600 w-48 p-3 rounded-xl"
               >
                 <img src={c.image} alt="" className="w-44" />
                 <div className="text-2xl items-center flex flex-col">
